@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-fluid {
+    max-width: 1200px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+}
+
+#counselorLegend {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+#counselorLegend>div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+#calendarContainer,
+#boardContainer {
+    min-height: calc(100vh - 200px);
+    /* 예: 헤더/여백 빼고 */
+}
+
+.fc .fc-toolbar {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    text-align: center;
+    flex: 1;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.fc-saturday {
+    color: #0d6efd;
+}
+
+.fc-sunday,
+.fc-holiday {
+    color: #dc3545;
+}
+
+.fc-daygrid-day-number {
+    font-size: 0.85rem;
+    color: #212529;
+}
+
+.fc-event {
+    border: none !important;
+    color: white !important;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.dropdown-menu label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.dropdown-menu input[type="checkbox"] {
+    margin-right: 4px;
+}
+
+.fc .fc-button {
+    background-color: transparent !important;
+    border: 1px solid #dee2e6 !important;
+    color: #495057 !important;
+    box-shadow: none !important;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem !important;
+    font-size: 0.9rem !important;
+    border-radius: 4px !important;
+}
+
+.fc .fc-button:hover {
+    background-color: #f8f9fa !important;
+}
+
+.fc .fc-today-button {
+    background-color: #fff !important;
+    /* border-color: #000 !important; */
+    color: #000 !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+}
+
+.fc .fc-prev-button,
+.fc .fc-next-button {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0.25rem 0.5rem !important;
+}
+
+.fc a {
+    text-decoration: none !important;
+}
+
+.fc-event {
+    cursor: pointer !important;
+}
+
+/* 요일 헤더 색상 지정 */
+/* 일요일 */
+.fc-col-header-cell.fc-day-sun a {
+    color: #dc3545 !important;
+}
+
+/* 토요일 */
+.fc-col-header-cell.fc-day-sat a {
+    color: #0d6efd;
+}
+
+/* 월~금 */
+.fc-col-header-cell:not(.fc-day-sun):not(.fc-day-sat) a {
+    color: #212529 !important;
+}
+
+/* 공휴일 */
+.holiday-event {
+    font-weight: bold;
+    font-size: 0.85rem;
+}

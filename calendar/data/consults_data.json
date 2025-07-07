@@ -1,0 +1,354 @@
+[
+  {
+    "id": 1,
+    "title": "홍길동 고객 상담",
+    "counselor": "김상담",
+    "customerName": "홍길동",
+    "customerStage": "접수",
+    "content": "고객이 서비스 문의를 하셨고, 자세한 설명과 함께 상품 추천을 진행.",
+    "date": "2025-07-01",
+    "comments": [
+      {
+        "id": 1,
+        "date": "2025-07-01",
+        "content": "상담 내용에 추가로 할인 프로모션 안내 바랍니다.",
+        "isRead": false
+      },
+      {
+        "id": 4,
+        "date": "2025-07-02",
+        "content": "이후 진행 상황을 오늘 오후까지 업데이트 바랍니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "이몽룡 고객 상담",
+    "counselor": "박상담",
+    "customerName": "이몽룡",
+    "customerStage": "진행중",
+    "content": "고객이 불만사항을 접수했고, 문제 해결을 위해 A팀에 요청함.",
+    "date": "2025-07-02",
+    "comments": [
+      {
+        "id": 2,
+        "date": "2025-07-02",
+        "content": "해결 진행 상황을 내일 오전까지 보고 바랍니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "성춘향 고객 상담",
+    "counselor": "이상담",
+    "customerName": "성춘향",
+    "customerStage": "완료",
+    "content": "고객의 요청이 처리 완료되었고, 결과를 안내함.",
+    "date": "2025-07-03",
+    "comments": [
+      {
+        "id": 3,
+        "date": "2025-07-03",
+        "content": "완료 처리 확인했고, 별도 조치 없습니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "최길동 고객 상담",
+    "counselor": "조상담",
+    "customerName": "최길동",
+    "customerStage": "접수",
+    "content": "고객이 신규 서비스 가입을 문의하였고, 약관 안내를 진행함.",
+    "date": "2025-07-04",
+    "comments": [
+      {
+        "id": 5,
+        "date": "2025-07-04",
+        "content": "약관 부분에서 중요한 조항 강조 필요.",
+        "isRead": false
+      },
+      {
+        "id": 6,
+        "date": "2025-07-04",
+        "content": "가입서류 준비 여부 재확인 요망.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "강감찬 고객 상담",
+    "counselor": "최상담",
+    "customerName": "강감찬",
+    "customerStage": "진행중",
+    "content": "고객의 불만 접수 후 처리 절차를 설명하고 경과를 안내.",
+    "date": "2025-07-05",
+    "comments": [
+      {
+        "id": 7,
+        "date": "2025-07-05",
+        "content": "해당 불만에 대해 빠른 피드백을 요청함.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "장보고 고객 상담",
+    "counselor": "백상담",
+    "customerName": "장보고",
+    "customerStage": "완료",
+    "content": "서비스 업그레이드 요청을 받고 변경 처리 후 완료.",
+    "date": "2025-07-06",
+    "comments": [
+      {
+        "id": 8,
+        "date": "2025-07-06",
+        "content": "업그레이드 완료 안내 후 고객 만족도 조사 진행.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "테스트 고객7 상담",
+    "counselor": "상담사3",
+    "customerName": "테스트고객7",
+    "customerStage": "진행중",
+    "content": "테스트고객7의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-07",
+    "comments": [
+      {
+        "id": 17,
+        "date": "2025-07-07",
+        "content": "테스트고객7 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "테스트 고객8 상담",
+    "counselor": "상담사4",
+    "customerName": "테스트고객8",
+    "customerStage": "완료",
+    "content": "테스트고객8의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-08",
+    "comments": [
+      {
+        "id": 18,
+        "date": "2025-07-08",
+        "content": "테스트고객8 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "테스트 고객9 상담",
+    "counselor": "상담사5",
+    "customerName": "테스트고객9",
+    "customerStage": "접수",
+    "content": "테스트고객9의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-09",
+    "comments": [
+      {
+        "id": 19,
+        "date": "2025-07-09",
+        "content": "테스트고객9 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "테스트 고객10 상담",
+    "counselor": "상담사1",
+    "customerName": "테스트고객10",
+    "customerStage": "진행중",
+    "content": "테스트고객10의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-10",
+    "comments": [
+      {
+        "id": 20,
+        "date": "2025-07-10",
+        "content": "테스트고객10 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "테스트 고객11 상담",
+    "counselor": "상담사2",
+    "customerName": "테스트고객11",
+    "customerStage": "완료",
+    "content": "테스트고객11의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-11",
+    "comments": [
+      {
+        "id": 21,
+        "date": "2025-07-11",
+        "content": "테스트고객11 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "테스트 고객12 상담",
+    "counselor": "상담사3",
+    "customerName": "테스트고객12",
+    "customerStage": "접수",
+    "content": "테스트고객12의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-12",
+    "comments": [
+      {
+        "id": 22,
+        "date": "2025-07-12",
+        "content": "테스트고객12 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "테스트 고객13 상담",
+    "counselor": "상담사4",
+    "customerName": "테스트고객13",
+    "customerStage": "진행중",
+    "content": "테스트고객13의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-13",
+    "comments": [
+      {
+        "id": 23,
+        "date": "2025-07-13",
+        "content": "테스트고객13 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "테스트 고객14 상담",
+    "counselor": "상담사5",
+    "customerName": "테스트고객14",
+    "customerStage": "완료",
+    "content": "테스트고객14의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-14",
+    "comments": [
+      {
+        "id": 24,
+        "date": "2025-07-14",
+        "content": "테스트고객14 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "테스트 고객15 상담",
+    "counselor": "상담사1",
+    "customerName": "테스트고객15",
+    "customerStage": "접수",
+    "content": "테스트고객15의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-15",
+    "comments": [
+      {
+        "id": 25,
+        "date": "2025-07-15",
+        "content": "테스트고객15 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "테스트 고객16 상담",
+    "counselor": "상담사2",
+    "customerName": "테스트고객16",
+    "customerStage": "진행중",
+    "content": "테스트고객16의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-16",
+    "comments": [
+      {
+        "id": 26,
+        "date": "2025-07-16",
+        "content": "테스트고객16 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "테스트 고객17 상담",
+    "counselor": "상담사3",
+    "customerName": "테스트고객17",
+    "customerStage": "완료",
+    "content": "테스트고객17의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-17",
+    "comments": [
+      {
+        "id": 27,
+        "date": "2025-07-17",
+        "content": "테스트고객17 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "테스트 고객18 상담",
+    "counselor": "상담사4",
+    "customerName": "테스트고객18",
+    "customerStage": "접수",
+    "content": "테스트고객18의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-18",
+    "comments": [
+      {
+        "id": 28,
+        "date": "2025-07-18",
+        "content": "테스트고객18 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "테스트 고객19 상담",
+    "counselor": "상담사5",
+    "customerName": "테스트고객19",
+    "customerStage": "진행중",
+    "content": "테스트고객19의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-19",
+    "comments": [
+      {
+        "id": 29,
+        "date": "2025-07-19",
+        "content": "테스트고객19 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": false
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "테스트 고객20 상담",
+    "counselor": "상담사1",
+    "customerName": "테스트고객20",
+    "customerStage": "완료",
+    "content": "테스트고객20의 문의에 대한 상담 내용을 기록합니다.",
+    "date": "2025-07-20",
+    "comments": [
+      {
+        "id": 30,
+        "date": "2025-07-20",
+        "content": "테스트고객20 상담에 대한 Supervisor 코멘트입니다.",
+        "isRead": true
+      }
+    ]
+  }
+]
