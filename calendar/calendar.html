@@ -2,60 +2,67 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>상담 캘린더</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-
   <div class="container-fluid p-3">
-    <div class="row mb-3">
-      <div class="col-md-9">
-        <div class="input-group">
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="multiFilterBtn"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              검색 옵션
-            </button>
-            <ul class="dropdown-menu p-2" style="min-width: 200px;">
-              <li><label><input type="checkbox" value="상담사"> 상담사</label></li>
-              <li><label><input type="checkbox" value="날짜"> 날짜</label></li>
-              <li><label><input type="checkbox" value="고객정보-이름"> 고객정보-이름</label></li>
-              <li><label><input type="checkbox" value="고객정보-번호"> 고객정보-번호</label></li>
-              <li><label><input type="checkbox" value="고객흐름단계"> 고객흐름단계</label></li>
-            </ul>
-          </div>
-          <input type="text" class="form-control" placeholder="검색어 입력">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-        </div>
-      </div>
-      <div class="col-md-3 text-end">
+
+    <!-- 버튼 그룹을 최상단 우측에 배치 -->
+    <div id="topBar" class="d-flex justify-content-end mb-3">
+      <div id="buttonGroup">
         <button id="calendarBtn" class="btn btn-outline-primary"><i class="bi bi-calendar"></i></button>
         <button id="boardBtn" class="btn btn-outline-secondary"><i class="bi bi-list"></i></button>
       </div>
     </div>
 
-    <!-- 상담사 색상 legend -->
-    <div id="counselorLegend" class="mb-2 d-flex flex-wrap gap-2"></div>
+    <!-- 검색 바 (버튼 아래 별도 줄) -->
+    <div id="searchWrapper" class="mb-3">
+      <div class="input-group">
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="multiFilterBtn"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            검색 옵션
+          </button>
+          <ul class="dropdown-menu p-2" style="min-width: 200px;">
+            <li><label><input type="checkbox" value="상담사" /> 상담사</label></li>
+            <li><label><input type="checkbox" value="날짜" /> 날짜</label></li>
+            <li><label><input type="checkbox" value="고객정보-이름" /> 고객정보-이름</label></li>
+            <li><label><input type="checkbox" value="고객정보-번호" /> 고객정보-번호</label></li>
+            <li><label><input type="checkbox" value="고객흐름단계" /> 고객흐름단계</label></li>
+          </ul>
+        </div>
+        <input type="text" class="form-control" placeholder="검색어 입력" />
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+      </div>
+    </div>
 
+    <!-- 달력 + 상담사 범례 컨테이너 -->
     <div id="calendarContainer">
+      <div id="counselorLegend">
+        <!-- 상담사 범례 동적 생성 -->
+      </div>
       <div id="calendar"></div>
     </div>
 
+    <!-- 게시판 -->
     <div id="boardContainer" class="d-none">
       <div class="d-flex justify-content-end mb-2">
-        <label class="me-2">페이지당 표시</label>
-        <select id="itemsPerPageSelect" class="form-select form-select-sm" style="width: auto;">
-          <option value="5" selected>5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
+        <div class="items-per-page-wrapper">
+          <label for="itemsPerPageSelect">페이지당 표시</label>
+          <select id="itemsPerPageSelect" class="form-select form-select-sm">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
       </div>
       <ul class="list-group" id="boardList"></ul>
     </div>
@@ -76,7 +83,7 @@
           <p><strong>진행 단계:</strong> <span id="modalStage"></span></p>
           <p><strong>상담 내용:</strong></p>
           <p class="border rounded p-2" id="modalContent"></p>
-          <hr>
+          <hr />
           <h6>💬 슈퍼바이저 댓글</h6>
           <ul id="modalComments" class="list-group"></ul>
         </div>

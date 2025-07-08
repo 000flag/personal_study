@@ -14,14 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const counselorColors = {};
     const colorPalette = [
-        '#4285f4',   // 파랑
-        '#f4b400',   // 노랑
-        '#0f9d58',   // 초록
-        '#ab47bc',   // 보라
-        '#00acc1',   // 청록
-        '#ff7043'    // 주황
-        // '#db4437' 빨강 제거
-    ]
+        '#4285f4', '#f4b400', '#0f9d58', '#ab47bc', '#00acc1', '#ff7043'
+    ];
 
     fetch('data/holidays_2025.json')
         .then(res => res.json())
@@ -39,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
             dayMaxEventRows: true,
             height: 'auto',
             headerToolbar: {
-                left: '',
+                left: 'prev today next',
                 center: 'title',
-                right: 'prev today next'
+                right: ''
             },
             buttonText: {
                 today: '오늘',
@@ -73,21 +67,20 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 allData = data;
                 renderFilteredEvents();
-                renderHolidays(); // 공휴일 표시 추가
+                renderHolidays();
             });
     }
 
-    // 공휴일 표시 함수
     function renderHolidays() {
         holidays.forEach(date => {
             calendar.addEvent({
                 title: '공휴일',
                 start: date,
                 allDay: true,
-                display: 'auto',  // auto로 바꿔서 일반 이벤트처럼 출력
-                backgroundColor: '#dc3545',  // 진한 빨강 배경
-                textColor: '#fff',           // 흰색 글자
-                classNames: ['holiday-event']  // 필요시 스타일링
+                display: 'auto',
+                backgroundColor: '#dc3545',
+                textColor: '#fff',
+                classNames: ['holiday-event']
             });
         });
     }
@@ -101,12 +94,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderLegend() {
         legendEl.innerHTML = '';
-        Object.keys(counselorColors).forEach(name => {
+
+        // 각 상담사별 상담 수 계산
+        const counts = {};
+        allData.forEach(item => {
+            if (!counts[item.counselor]) counts[item.counselor] = 0;
+            counts[item.counselor]++;
+        });
+
+        // 상담사 이름 + 수를 배열로 정리하고 상담 수로 내림차순 정렬
+        const sortedCounselors = Object.keys(counselorColors)
+            .map(name => ({ name, count: counts[name] || 0 }))
+            .sort((a, b) => b.count - a.count);
+
+        sortedCounselors.forEach(({ name, count }) => {
             const div = document.createElement('div');
-            div.className = 'd-flex align-items-center gap-1';
+            div.className = 'd-flex align-items-center gap-1 justify-content-between';
             div.innerHTML = `
-                <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${counselorColors[name]};"></span>
-                <small>${name}</small>
+                <div class="d-flex align-items-center gap-1">
+                    <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${counselorColors[name]};"></span>
+                    <small>${name}</small>
+                </div>
+                <small class="text-muted">${count}</small>
             `;
             legendEl.appendChild(div);
         });
@@ -150,6 +159,19 @@ document.addEventListener('DOMContentLoaded', function () {
         renderBoard(filteredData);
     }
 
+    function getStageBadgeClass(stage) {
+        switch (stage) {
+            case '접수':
+                return 'bg-primary';
+            case '진행중':
+                return 'bg-warning text-dark';
+            case '완료':
+                return 'bg-success';
+            default:
+                return 'bg-secondary';
+        }
+    }
+
     function renderBoard(data) {
         boardList.innerHTML = '';
         const startIdx = (currentPage - 1) * itemsPerPage;
@@ -158,12 +180,84 @@ document.addEventListener('DOMContentLoaded', function () {
         pageData.forEach(item => {
             const li = document.createElement('li');
             li.className = 'list-group-item';
-            li.textContent = `${item.date} - ${item.title}`;
-            li.addEventListener('click', () => showPopup(item));
+            li.style.cursor = 'pointer';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'board-item-header';
+            const stageBadgeClass = getStageBadgeClass(item.customerStage);
+            headerDiv.innerHTML = `
+            <i class="bi bi-caret-down-fill"></i>
+            <span>${item.date} - ${item.title}</span>
+            <span class="ms-2 text-muted small">[${item.counselor}]</span>
+            <span class="badge ${stageBadgeClass} ms-2">${item.customerStage || '없음'}</span>
+        `;
+            li.appendChild(headerDiv);
+
+            const detailDiv = document.createElement('div');
+            detailDiv.className = 'mt-2 toggle-detail';
+            detailDiv.style.maxHeight = '0';
+            detailDiv.style.overflow = 'hidden';
+            detailDiv.style.transition = 'max-height 0.3s ease';
+
+            let commentsHtml = '';
+
+            if (item.comments && item.comments.length > 0) {
+                commentsHtml = `
+                <hr />
+                <h6>💬 슈퍼바이저 댓글</h6>
+                <ul class="list-group">
+                    ${item.comments.map(c => `
+                        <li class="list-group-item comment-item d-flex justify-content-between align-items-start">
+                            <div>
+                                <div>${c.content}</div>
+                                <small class="text-muted">${c.date}</small>
+                            </div>
+                            ${c.isRead ? '' : '<span class="badge bg-danger rounded-pill">미확인</span>'}
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+            } else {
+                commentsHtml = `
+                <hr />
+                <h6>💬 슈퍼바이저 댓글</h6>
+                <ul class="list-group">
+                    <li class="list-group-item text-muted comment-item">등록된 댓글이 없습니다.</li>
+                </ul>
+            `;
+            }
+
+            detailDiv.innerHTML = `
+            <p><strong>고객명:</strong> ${item.customerName || ''}</p>
+            <p><strong>연락처:</strong> ${item.customerPhone || ''}</p>
+            <p><strong>담당 상담사:</strong> ${item.counselor || ''}</p>
+            <p><strong>진행 단계:</strong> ${item.customerStage || ''}</p>
+            <p><strong>상담 내용:</strong></p>
+            <p class="border rounded p-2">${item.content || ''}</p>
+            ${commentsHtml}
+        `;
+            li.appendChild(detailDiv);
+
+            li.addEventListener('click', () => {
+                const isExpanded = detailDiv.style.maxHeight !== '0px' && detailDiv.style.maxHeight !== '0';
+                const icon = headerDiv.querySelector('i');
+
+                if (isExpanded) {
+                    detailDiv.style.maxHeight = '0';
+                    icon.classList.remove('bi-caret-up-fill');
+                    icon.classList.add('bi-caret-down-fill');
+                } else {
+                    detailDiv.style.maxHeight = detailDiv.scrollHeight + 'px';
+                    icon.classList.remove('bi-caret-down-fill');
+                    icon.classList.add('bi-caret-up-fill');
+                }
+            });
+
             boardList.appendChild(li);
         });
 
         renderPagination(data.length);
+        updateBoardSummary(data);
     }
 
     function renderPagination(totalItems) {
@@ -179,7 +273,29 @@ document.addEventListener('DOMContentLoaded', function () {
         const paginationUl = document.getElementById('boardPagination');
         paginationUl.innerHTML = '';
 
-        for (let i = 1; i <= totalPages; i++) {
+        const blockSize = 3; // 블록당 페이지 수
+        const currentBlock = Math.ceil(currentPage / blockSize);
+        const startPage = (currentBlock - 1) * blockSize + 1;
+        let endPage = startPage + blockSize - 1;
+        if (endPage > totalPages) endPage = totalPages;
+
+        // 이전 블록 버튼
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentBlock === 1 ? 'disabled' : ''}`;
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-link';
+        prevBtn.innerHTML = `<i class="bi bi-chevron-left"></i>`;
+        prevBtn.addEventListener('click', () => {
+            if (currentBlock > 1) {
+                currentPage = (startPage - blockSize) > 0 ? (startPage - blockSize) : 1;
+                renderFilteredEvents();
+            }
+        });
+        prevLi.appendChild(prevBtn);
+        paginationUl.appendChild(prevLi);
+
+        // 페이지 번호
+        for (let i = startPage; i <= endPage; i++) {
             const li = document.createElement('li');
             li.className = `page-item ${i === currentPage ? 'active' : ''}`;
             const btn = document.createElement('button');
@@ -192,6 +308,21 @@ document.addEventListener('DOMContentLoaded', function () {
             li.appendChild(btn);
             paginationUl.appendChild(li);
         }
+
+        // 다음 블록 버튼
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${endPage === totalPages ? 'disabled' : ''}`;
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-link';
+        nextBtn.innerHTML = `<i class="bi bi-chevron-right"></i>`;
+        nextBtn.addEventListener('click', () => {
+            if (endPage < totalPages) {
+                currentPage = endPage + 1;
+                renderFilteredEvents();
+            }
+        });
+        nextLi.appendChild(nextBtn);
+        paginationUl.appendChild(nextLi);
     }
 
     function getValueByOption(item, option) {
@@ -213,19 +344,19 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('modalContent').textContent = details.content || '';
 
         const commentsEl = document.getElementById('modalComments');
-        commentsEl.innerHTML = '';  // 초기화
+        commentsEl.innerHTML = '';
 
         if (details.comments && details.comments.length > 0) {
             details.comments.forEach(c => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-start';
                 li.innerHTML = `
-                <div>
-                    <div>${c.content}</div>
-                    <small class="text-muted">${c.date}</small>
-                </div>
-                ${c.isRead ? '' : '<span class="badge bg-danger rounded-pill">미확인</span>'}
-            `;
+                    <div>
+                        <div>${c.content}</div>
+                        <small class="text-muted">${c.date}</small>
+                    </div>
+                    ${c.isRead ? '' : '<span class="badge bg-danger rounded-pill">미확인</span>'}
+                `;
                 commentsEl.appendChild(li);
             });
         } else {
@@ -237,6 +368,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
         detailModal.show();
+    }
+
+    function updateBoardSummary(data) {
+        const summaryEl = document.getElementById('boardSummary');
+        const total = data.length;
+        const stageCounts = {};
+
+        data.forEach(item => {
+            const stage = item.customerStage || '없음';
+            if (!stageCounts[stage]) stageCounts[stage] = 0;
+            stageCounts[stage]++;
+        });
+
+        const stageText = Object.entries(stageCounts)
+            .map(([stage, count]) => `${stage}: ${count}`)
+            .join(' | ');
+
+        summaryEl.textContent = `총 상담: ${total} | ${stageText}`;
     }
 
     searchInput.addEventListener('input', () => { currentPage = 1; renderFilteredEvents(); });
@@ -252,11 +401,23 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('boardContainer').classList.add('d-none');
         document.getElementById('counselorLegend').classList.remove('d-none');
         setTimeout(() => calendar.updateSize(), 0);
+
+        // 버튼 스타일 토글
+        document.getElementById('calendarBtn').classList.remove('btn-outline-secondary');
+        document.getElementById('calendarBtn').classList.add('btn-outline-primary');
+        document.getElementById('boardBtn').classList.remove('btn-outline-primary');
+        document.getElementById('boardBtn').classList.add('btn-outline-secondary');
     });
 
     document.getElementById('boardBtn').addEventListener('click', () => {
         document.getElementById('calendarContainer').classList.add('d-none');
         document.getElementById('boardContainer').classList.remove('d-none');
         document.getElementById('counselorLegend').classList.add('d-none');
+
+        // 버튼 스타일 토글
+        document.getElementById('boardBtn').classList.remove('btn-outline-secondary');
+        document.getElementById('boardBtn').classList.add('btn-outline-primary');
+        document.getElementById('calendarBtn').classList.remove('btn-outline-primary');
+        document.getElementById('calendarBtn').classList.add('btn-outline-secondary');
     });
 });
