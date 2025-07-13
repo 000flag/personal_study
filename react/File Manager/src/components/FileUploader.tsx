@@ -32,7 +32,7 @@ const FileUploader: React.FC<Props> = ({ selectedDir }) => {
           onChange={e => setFile(e.target.files?.[0] || null)}
         />
         <label htmlFor="file-input">
-          <Button variant="outline-primary" size="sm">Choose File</Button>
+          <Button variant="outline-primary" size="sm">파일 선택</Button>
         </label>
         <Button
           variant="primary"
@@ -41,7 +41,7 @@ const FileUploader: React.FC<Props> = ({ selectedDir }) => {
           onClick={() => file && uploadFile(selectedDir, file).then(() => setProgress(100))}
           className="ms-2"
         >
-          Upload
+          업로드
         </Button>
         {progress > 0 && <ProgressBar now={progress} className="mt-2" />}
       </Card.Body>
