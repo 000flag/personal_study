@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f0f2f5;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  border-right: 1px solid #dee2e6;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+}
+
+.main-area {
+  padding: 1rem;
+}
+
+.upload-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: .5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.thumbnail-card {
+  width: 100px;
+  margin: .5rem;
+}
+
+.thumbnail-card img {
+  border-radius: .25rem;
+}

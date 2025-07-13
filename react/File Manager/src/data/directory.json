@@ -1,0 +1,33 @@
+[
+  {
+    "id": "/A1",
+    "name": "A1",
+    "children": []
+  },
+  {
+    "id": "/B1",
+    "name": "B1",
+    "children": [
+      {
+        "id": "/B1/sub1",
+        "name": "sub1",
+        "children": []
+      },
+      {
+        "id": "/B1/sub2",
+        "name": "sub2",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "/C1",
+    "name": "C1",
+    "children": []
+  },
+  {
+    "id": "/D1",
+    "name": "D1",
+    "children": []
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "image1.jpg",
+    "path": "/A1/image1.jpg"
+  },
+  {
+    "name": "doc1.pdf",
+    "path": "/B1/doc1.pdf"
+  },
+  {
+    "name": "file.txt",
+    "path": "/C1/file.txt"
+  }
+]

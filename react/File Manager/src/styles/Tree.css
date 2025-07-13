@@ -1,0 +1,22 @@
+.tree-node {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.tree-node:hover {
+    background-color: rgba(30, 136, 229, .1);
+}
+
+.tree-node.selected {
+    background-color: rgba(30, 136, 229, .2);
+    font-weight: 600;
+}
+
+.tree-children {
+    margin-left: 16px;
+    border-left: 1px solid #dee2e6;
+    padding-left: 8px;
+}
