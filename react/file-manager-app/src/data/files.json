@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "id": "1",
+      "name": "project-plan.docx",
+      "size": 245760,
+      "type": "document",
+      "extension": "docx",
+      "dateModified": "2024-01-15T10:30:00Z",
+      "folderId": "2",
+      "path": "/Documents/Projects/project-plan.docx"
+    },
+    {
+      "id": "2",
+      "name": "presentation.pptx",
+      "size": 1048576,
+      "type": "presentation",
+      "extension": "pptx",
+      "dateModified": "2024-01-14T14:20:00Z",
+      "folderId": "2",
+      "path": "/Documents/Projects/presentation.pptx"
+    },
+    {
+      "id": "3",
+      "name": "budget.xlsx",
+      "size": 102400,
+      "type": "spreadsheet",
+      "extension": "xlsx",
+      "dateModified": "2024-01-13T09:15:00Z",
+      "folderId": "3",
+      "path": "/Documents/Personal/budget.xlsx"
+    },
+    {
+      "id": "4",
+      "name": "vacation-photo.jpg",
+      "size": 2097152,
+      "type": "image",
+      "extension": "jpg",
+      "dateModified": "2024-01-12T16:45:00Z",
+      "folderId": "6",
+      "path": "/Pictures/vacation-photo.jpg"
+    },
+    {
+      "id": "5",
+      "name": "app-component.tsx",
+      "size": 8192,
+      "type": "code",
+      "extension": "tsx",
+      "dateModified": "2024-01-16T11:00:00Z",
+      "folderId": "4",
+      "path": "/Documents/Projects/React Apps/app-component.tsx"
+    }
+  ]
+}
