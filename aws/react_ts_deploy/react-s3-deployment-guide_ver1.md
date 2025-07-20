@@ -85,7 +85,7 @@ CMD ["npm", "start"]
 
 ## 최신 자동화 방법: AWS CodePipeline \& AWS CDK \& AWS Amplify
 
-### A. AWS CodePipeline, CodeBuild 이용한 완전 자동화[^1_1][^1_2][^1_3][^1_4]
+### A. AWS CodePipeline, CodeBuild 이용한 완전 자동화[^1_1][^1_2][^1_3][^1_4][^1_21]
 
 1. **GitHub/GitLab 등과 연동**
     - Source Stage에서 브랜치 감시
@@ -179,6 +179,8 @@ CloudFront와 S3 연동 및 캐시 처리, 이력 관리까지 자동화하는 �
 [^1_19]: https://velog.io/@leynsp/Next.js-프로젝트를-AWS-S3로-배포하기-with-Docker
 
 [^1_20]: https://velog.io/@yoonth95/GitHub-Actions으로-CICD-구축하기-AWS-S3-및-CloudFront를-활용한-자동-배포
+
+[^1_21]: https://arcozz.tistory.com/2
 
 
 ---
