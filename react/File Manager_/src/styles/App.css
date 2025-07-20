@@ -41,23 +41,17 @@
   font-size: 0.9rem;
   color: #495057;
   flex-shrink: 0;
-  display: flex;
-  /* Added for select box alignment */
-  justify-content: space-between;
-  /* Added for select box alignment */
-  align-items: center;
-  /* Added for select box alignment */
+  display: flex; /* Added for select box alignment */
+  justify-content: space-between; /* Added for select box alignment */
+  align-items: center; /* Added for select box alignment */
 }
 
 .category-select {
-  width: auto;
-  /* Allow select box to size naturally */
-  max-width: 120px;
-  /* Limit width for smaller screens */
+  width: auto; /* Allow select box to size naturally */
+  max-width: 120px; /* Limit width for smaller screens */
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
-  height: auto;
-  /* Adjust height to fit content */
+  height: auto; /* Adjust height to fit content */
 }
 
 .panel-content {
@@ -129,66 +123,46 @@
   .left-panel,
   .middle-panel,
   .right-panel {
-    width: 100% !important;
-    /* Override inline width from horizontal resizer */
+    width: 100% !important; /* Override inline width from horizontal resizer */
     min-width: auto;
     max-width: none;
-    border-right: none;
-    /* Remove vertical borders */
-    border-bottom: 1px solid #dee2e6;
-    /* Add horizontal borders */
+    border-right: none; /* Remove vertical borders */
+    border-bottom: 1px solid #dee2e6; /* Add horizontal borders */
   }
-
   .right-panel {
-    border-bottom: none;
-    /* Last panel doesn't need bottom border */
+    border-bottom: none; /* Last panel doesn't need bottom border */
   }
 
   .left-panel {
     min-height: 120px;
     max-height: 300px;
-    flex-shrink: 0;
-    /* Prevent shrinking below min-height */
+    flex-shrink: 0; /* Prevent shrinking below min-height */
   }
-
   .middle-panel {
     min-height: 200px;
     max-height: 500px;
-    flex-shrink: 0;
-    /* Prevent shrinking below min-height */
+    flex-shrink: 0; /* Prevent shrinking below min-height */
   }
-
   .right-panel {
-    min-height: 150px;
-    /* Ensure preview is visible */
-    flex: 1;
-    /* This panel takes remaining space */
+    min-height: 150px; /* Ensure preview is visible */
+    flex: 1; /* This panel takes remaining space */
     /* Removed max-height to allow it to fill remaining space */
   }
 
   .resizer {
-    display: block;
-    /* Make resizers visible */
-    height: 4px;
-    /* Vertical resizer height */
-    width: 100%;
-    /* Vertical resizer width */
-    cursor: row-resize;
-    /* Change cursor */
-    border-right: none;
-    /* Remove vertical border */
-    border-bottom: 1px solid #dee2e6;
-    /* Add horizontal border */
+    display: block; /* Make resizers visible */
+    height: 4px; /* Vertical resizer height */
+    width: 100%; /* Vertical resizer width */
+    cursor: row-resize; /* Change cursor */
+    border-right: none; /* Remove vertical border */
+    border-bottom: 1px solid #dee2e6; /* Add horizontal border */
   }
-
   .resizer::before {
-    cursor: row-resize;
-    /* Ensure pseudo-element also has correct cursor */
+    cursor: row-resize; /* Ensure pseudo-element also has correct cursor */
   }
 
   .resizing-overlay {
-    cursor: row-resize;
-    /* Ensure overlay also has correct cursor */
+    cursor: row-resize; /* Ensure overlay also has correct cursor */
   }
 
   .panel-header {
@@ -214,12 +188,10 @@
     min-height: 100px;
     max-height: 250px;
   }
-
   .middle-panel {
     min-height: 180px;
     max-height: 400px;
   }
-
   .right-panel {
     min-height: 120px;
     /* Removed max-height */
@@ -244,12 +216,10 @@
     min-height: 80px;
     max-height: 200px;
   }
-
   .middle-panel {
     min-height: 150px;
     max-height: 350px;
   }
-
   .right-panel {
     min-height: 100px;
     /* Removed max-height */
@@ -286,8 +256,7 @@
   }
 
   .right-panel {
-    min-height: 80px;
-    /* Adjusted to ensure visibility */
+    min-height: 80px; /* Adjusted to ensure visibility */
     /* Removed max-height */
   }
 
@@ -317,8 +286,7 @@
   }
 
   .right-panel {
-    min-height: 70px;
-    /* Adjusted to ensure visibility */
+    min-height: 70px; /* Adjusted to ensure visibility */
     /* Removed max-height */
   }
 }

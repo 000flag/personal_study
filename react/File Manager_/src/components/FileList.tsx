@@ -10,7 +10,7 @@ interface FileListProps {
   selectedFolderId?: string
   onFileSelect: (file: FileItem | null) => void
   selectedFile?: FileItem | null
-  selectedCategory: string
+  selectedCategory: string // New prop for category
 }
 
 type SortField = "name" | "size" | "dateModified" | "type"

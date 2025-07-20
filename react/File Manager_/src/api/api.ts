@@ -6,7 +6,7 @@ export interface Folder {
   path: string
   parentId: string | null
   children: string[]
-  category: "all" | "image" | "video" | "document" | "audio"
+  category: "image" | "video" | "zip"
 }
 
 export interface FileItem {
@@ -18,7 +18,7 @@ export interface FileItem {
   dateModified: string
   folderId: string
   path: string
-  category: "all" | "image" | "video" | "document" | "audio"
+  category: "image" | "video" | "zip"
 }
 
 export interface UploadResponse {
@@ -27,18 +27,13 @@ export interface UploadResponse {
   message?: string
 }
 
-// Fetch folders from API
-export const fetchFolders = async (category = "all"): Promise<Folder[]> => {
+// Fetch folders from API - now shows all folders since they're shared
+export const fetchFolders = async (category = "image"): Promise<Folder[]> => {
   try {
     const response = await fetch("../data/folders.json")
     const data = await response.json()
-    let folders: Folder[] = data.folders
-
-    if (category !== "all") {
-      folders = folders.filter((folder) => folder.category === category || folder.category === "all")
-    }
-
-    return folders
+    // Return all folders since they are shared/common
+    return data.folders
   } catch (error) {
     console.error("Error fetching folders:", error)
     return []
@@ -46,7 +41,7 @@ export const fetchFolders = async (category = "all"): Promise<Folder[]> => {
 }
 
 // Fetch files from API
-export const fetchFiles = async (folderId?: string, category = "all"): Promise<FileItem[]> => {
+export const fetchFiles = async (folderId?: string, category = "image"): Promise<FileItem[]> => {
   try {
     const response = await fetch("../data/files.json")
     const data = await response.json()
@@ -56,9 +51,8 @@ export const fetchFiles = async (folderId?: string, category = "all"): Promise<F
       files = files.filter((file: FileItem) => file.folderId === folderId)
     }
 
-    if (category !== "all") {
-      files = files.filter((file) => file.category === category)
-    }
+    // Filter by category to show only files matching the selected category
+    files = files.filter((file) => file.category === category)
 
     return files
   } catch (error) {
@@ -68,16 +62,16 @@ export const fetchFiles = async (folderId?: string, category = "all"): Promise<F
 }
 
 // Upload file to API
-export const uploadFile = async (file: File, folderId: string, description: string): Promise<UploadResponse> => {
+export const uploadFile = async (file: File, folderName: string, description: string): Promise<UploadResponse> => {
   try {
     // Prepare FormData for file upload
     const formData = new FormData()
     formData.append("file", file)
-    formData.append("folderId", folderId)
-    formData.append("description", description) // Add description to form data
+    formData.append("folder", folderName) // Changed from folderId to folder name
+    formData.append("description", description)
 
     // This is a stub for the actual API call
-    console.log("Preparing to upload file:", file.name, "to folder:", folderId, "with description:", description)
+    console.log("Preparing to upload file:", file.name, "to folder:", folderName, "with description:", description)
 
     // Simulate API call
     const response = await fetch("/api/upload", {

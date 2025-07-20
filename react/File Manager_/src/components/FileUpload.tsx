@@ -37,6 +37,37 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
   }, [selectedUploadFile])
 
+  // Get allowed file extensions based on category
+  const getAllowedExtensions = (category: string): string[] => {
+    switch (category) {
+      case "image":
+        return ["jpg", "jpeg", "png", "ico", "svg", "gif", "webp", "heic"]
+      case "video":
+        return ["mp4", "m4a", "avi", "mov", "wmv"]
+      case "document":
+        return ["zip"] // Based on the requirement for zip folder
+      default:
+        return [] // No restrictions for other categories
+    }
+  }
+
+  // Check if file extension is allowed
+  const isFileExtensionAllowed = (fileName: string, category: string): boolean => {
+    const allowedExtensions = getAllowedExtensions(category)
+    if (allowedExtensions.length === 0) return true // No restrictions
+
+    const fileExtension = fileName.split(".").pop()?.toLowerCase() || ""
+    return allowedExtensions.includes(fileExtension)
+  }
+
+  // Get file extension validation message
+  const getExtensionValidationMessage = (category: string): string => {
+    const allowedExtensions = getAllowedExtensions(category)
+    if (allowedExtensions.length === 0) return ""
+
+    return `Only ${allowedExtensions.join(", ")} files are allowed for ${category} category.`
+  }
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
     setDragOver(true)
@@ -53,14 +84,36 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
-      setSelectedUploadFile(files[0])
+      const file = files[0]
+      if (isFileExtensionAllowed(file.name, selectedCategory)) {
+        setSelectedUploadFile(file)
+        setWarningMessage(null) // Clear any previous warnings
+      } else {
+        setWarningMessage({
+          type: "danger",
+          text: `Invalid file type. ${getExtensionValidationMessage(selectedCategory)}`,
+        })
+      }
     }
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
-      setSelectedUploadFile(files[0])
+      const file = files[0]
+      if (isFileExtensionAllowed(file.name, selectedCategory)) {
+        setSelectedUploadFile(file)
+        setWarningMessage(null) // Clear any previous warnings
+      } else {
+        setWarningMessage({
+          type: "danger",
+          text: `Invalid file type. ${getExtensionValidationMessage(selectedCategory)}`,
+        })
+        // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ""
+        }
+      }
     }
   }
 
@@ -68,20 +121,19 @@ const FileUpload: React.FC<FileUploadProps> = ({
     setWarningMessage(null) // Clear previous warnings
     setUploadMessage(null) // Clear previous upload messages
 
-    if (selectedCategory === "all") {
-      // Add this condition
-      setWarningMessage({
-        type: "danger",
-        text: "File upload is disabled for 'All' category. Please select a specific category.",
-      })
-      return
-    }
     if (!selectedFolderId) {
       setWarningMessage({ type: "danger", text: "Please select a folder to upload." })
       return
     }
     if (!selectedUploadFile) {
       setWarningMessage({ type: "danger", text: "Please select a file to upload." })
+      return
+    }
+    if (!isFileExtensionAllowed(selectedUploadFile.name, selectedCategory)) {
+      setWarningMessage({
+        type: "danger",
+        text: `Invalid file type. ${getExtensionValidationMessage(selectedCategory)}`,
+      })
       return
     }
     if (!description.trim()) {
@@ -104,7 +156,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
         })
       }, 200)
 
-      const result = await uploadFile(selectedUploadFile, selectedFolderId, description) // Pass description
+      // Get folder name from selectedFolderId
+      const folderNames = { "1": "BANNER", "2": "MODEL", "3": "LANDING", "4": "ETC" }
+      const folderName = folderNames[selectedFolderId as keyof typeof folderNames] || "BANNER"
+
+      const result = await uploadFile(selectedUploadFile, folderName, description)
 
       clearInterval(progressInterval)
       setUploadProgress(100)
@@ -112,7 +168,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       if (result.success) {
         setUploadMessage({ type: "success", text: "File uploaded successfully!" })
         setSelectedUploadFile(null)
-        setDescription("") // Clear description after successful upload
+        setDescription("")
         onUploadComplete()
 
         // Reset file input
@@ -129,7 +185,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       setTimeout(() => {
         setUploadProgress(0)
         setUploadMessage(null)
-        setWarningMessage(null) // Also clear warnings after a delay
+        setWarningMessage(null)
       }, 3000)
     }
   }
@@ -171,15 +227,23 @@ const FileUpload: React.FC<FileUploadProps> = ({
     return `/placeholder.svg?height=200&width=300&text=${encodeURIComponent(file.name)}`
   }
 
+  // Get accept attribute for file input based on category
+  const getAcceptAttribute = (category: string): string => {
+    const allowedExtensions = getAllowedExtensions(category)
+    if (allowedExtensions.length === 0) return "*/*"
+
+    return allowedExtensions.map((ext) => `.${ext}`).join(",")
+  }
+
   return (
     <div className="file-upload-container">
       <div className="upload-section">
         <div
-          className={`upload-dropzone ${dragOver ? "drag-over" : ""} ${selectedCategory === "all" ? "disabled-upload" : ""}`} // Add disabled-upload class
-          onDragOver={selectedCategory === "all" ? undefined : handleDragOver} // Disable drag events
-          onDragLeave={selectedCategory === "all" ? undefined : handleDragLeave}
-          onDrop={selectedCategory === "all" ? undefined : handleDrop}
-          onClick={selectedCategory === "all" ? undefined : () => fileInputRef.current?.click()} // Disable click
+          className={`upload-dropzone ${dragOver ? "drag-over" : ""}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
         >
           <div className="upload-icon">📁</div>
           <div className="upload-text">
@@ -188,7 +252,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
           <div className="upload-subtext">
             {selectedUploadFile
               ? `${formatFileSize(selectedUploadFile.size)} • ${selectedUploadFile.type || "Unknown type"}`
-              : "Supports all file types"}
+              : getAllowedExtensions(selectedCategory).length > 0
+                ? `Supports: ${getAllowedExtensions(selectedCategory).join(", ")} files`
+                : "Supports all file types"}
           </div>
           <input
             ref={fileInputRef}
@@ -196,9 +262,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
             className="file-input"
             onChange={handleFileSelect}
             multiple={false}
-            disabled={selectedCategory === "all"}
-          />{" "}
-          {/* Disable input */}
+            accept={getAcceptAttribute(selectedCategory)}
+          />
         </div>
 
         {selectedUploadFile && (
@@ -216,14 +281,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </Form.Group>
 
             <div className="upload-actions">
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleUpload}
-                disabled={uploading || selectedCategory === "all"}
-              >
-                {" "}
-                {/* Add selectedCategory === "all" */}
+              <Button variant="primary" size="sm" onClick={handleUpload} disabled={uploading}>
                 {uploading ? "Uploading..." : "Upload File"}
               </Button>
               <Button
@@ -231,7 +289,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 size="sm"
                 onClick={() => {
                   setSelectedUploadFile(null)
-                  setDescription("") // Clear description on clear
+                  setDescription("")
                   if (fileInputRef.current) fileInputRef.current.value = ""
                 }}
                 disabled={uploading}

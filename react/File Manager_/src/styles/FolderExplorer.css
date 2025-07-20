@@ -91,7 +91,8 @@
   color: #333;
 }
 
-.folder-item:not(:last-child)>.folder-children::before {
+/* Windows Explorer style tree lines */
+.folder-item:not(:last-child) > .folder-children::before {
   content: "";
   position: absolute;
   left: -1px;
@@ -104,13 +105,15 @@
   position: relative;
 }
 
+/* Loading state */
 .folder-explorer .text-center {
   padding: 2rem 1rem;
   color: #6c757d;
   font-size: 0.875rem;
 }
 
-/* Responsive Styles */
+/* Add these responsive styles at the end of the file */
+
 @media (max-width: 992px) {
   .folder-tree {
     padding: 0.25rem 0;

@@ -2,80 +2,69 @@
   "files": [
     {
       "id": "1",
-      "name": "project-plan.docx",
+      "name": "banner-image.jpg",
       "size": 245760,
-      "type": "document",
-      "extension": "docx",
-      "dateModified": "2024-01-15T10:30:00Z",
-      "folderId": "2",
-      "path": "/Documents/Projects/project-plan.docx",
-      "category": "document"
-    },
-    {
-      "id": "2",
-      "name": "presentation.pptx",
-      "size": 1048576,
-      "type": "presentation",
-      "extension": "pptx",
-      "dateModified": "2024-01-14T14:20:00Z",
-      "folderId": "2",
-      "path": "/Documents/Projects/presentation.pptx",
-      "category": "document"
-    },
-    {
-      "id": "3",
-      "name": "budget.xlsx",
-      "size": 102400,
-      "type": "spreadsheet",
-      "extension": "xlsx",
-      "dateModified": "2024-01-13T09:15:00Z",
-      "folderId": "3",
-      "path": "/Documents/Personal/budget.xlsx",
-      "category": "document"
-    },
-    {
-      "id": "4",
-      "name": "vacation-photo.jpg",
-      "size": 2097152,
       "type": "image",
       "extension": "jpg",
-      "dateModified": "2024-01-12T16:45:00Z",
-      "folderId": "6",
-      "path": "/Pictures/vacation-photo.jpg",
+      "dateModified": "2024-01-15T10:30:00Z",
+      "folderId": "1",
+      "path": "/BANNER/banner-image.jpg",
       "category": "image"
     },
     {
-      "id": "5",
-      "name": "app-component.tsx",
-      "size": 8192,
-      "type": "code",
-      "extension": "tsx",
-      "dateModified": "2024-01-16T11:00:00Z",
-      "folderId": "4",
-      "path": "/Documents/Projects/React Apps/app-component.tsx",
-      "category": "document"
+      "id": "2",
+      "name": "model-photo.png",
+      "size": 1048576,
+      "type": "image",
+      "extension": "png",
+      "dateModified": "2024-01-14T14:20:00Z",
+      "folderId": "2",
+      "path": "/MODEL/model-photo.png",
+      "category": "image"
     },
     {
-      "id": "6",
-      "name": "holiday-video.mp4",
+      "id": "3",
+      "name": "landing-video.mp4",
       "size": 5242880,
       "type": "video",
       "extension": "mp4",
-      "dateModified": "2024-01-17T09:00:00Z",
-      "folderId": "7",
-      "path": "/Videos/holiday-video.mp4",
+      "dateModified": "2024-01-13T09:15:00Z",
+      "folderId": "3",
+      "path": "/LANDING/landing-video.mp4",
       "category": "video"
     },
     {
-      "id": "7",
-      "name": "favorite-song.mp3",
+      "id": "4",
+      "name": "archive.zip",
+      "size": 2097152,
+      "type": "archive",
+      "extension": "zip",
+      "dateModified": "2024-01-12T16:45:00Z",
+      "folderId": "4",
+      "path": "/ETC/archive.zip",
+      "category": "document"
+    },
+    {
+      "id": "5",
+      "name": "banner-video.mov",
+      "size": 8192000,
+      "type": "video",
+      "extension": "mov",
+      "dateModified": "2024-01-16T11:00:00Z",
+      "folderId": "1",
+      "path": "/BANNER/banner-video.mov",
+      "category": "video"
+    },
+    {
+      "id": "6",
+      "name": "model-archive.zip",
       "size": 3145728,
-      "type": "audio",
-      "extension": "mp3",
-      "dateModified": "2024-01-18T10:00:00Z",
-      "folderId": "8",
-      "path": "/Music/favorite-song.mp3",
-      "category": "audio"
+      "type": "archive",
+      "extension": "zip",
+      "dateModified": "2024-01-17T10:00:00Z",
+      "folderId": "2",
+      "path": "/MODEL/model-archive.zip",
+      "category": "document"
     }
   ]
 }

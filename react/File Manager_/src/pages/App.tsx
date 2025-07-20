@@ -152,11 +152,9 @@ const App: React.FC = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
               aria-label="Select folder category"
             >
-              <option value="all">All</option>
               <option value="image">Image</option>
               <option value="video">Video</option>
-              <option value="document">Document</option>
-              <option value="audio">Audio</option>
+              <option value="zip">Zip</option>
             </Form.Select>
           </div>
           <FolderExplorer

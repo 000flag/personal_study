@@ -8,7 +8,7 @@ import "../styles/FolderExplorer.css"
 interface FolderExplorerProps {
   onFolderSelect: (folderId: string) => void
   selectedFolderId?: string
-  selectedCategory: string
+  selectedCategory: string // New prop for category
 }
 
 const FolderExplorer: React.FC<FolderExplorerProps> = ({ onFolderSelect, selectedFolderId, selectedCategory }) => {
@@ -17,18 +17,14 @@ const FolderExplorer: React.FC<FolderExplorerProps> = ({ onFolderSelect, selecte
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadFolders(selectedCategory) // Pass selectedCategory to loadFolders
-  }, [selectedCategory]) // Re-run when selectedCategory changes
+    loadFolders() // Remove category parameter since folders are shared
+  }, []) // Remove selectedCategory dependency since folders don't change
 
-  const loadFolders = async (category: string) => {
+  const loadFolders = async () => {
     setLoading(true)
     try {
-      const folderData = await fetchFolders(category) // Pass category to fetchFolders
+      const folderData = await fetchFolders() // Remove category parameter
       setFolders(folderData)
-      // Reset selected folder if it's no longer in the filtered list
-      if (selectedFolderId && !folderData.some((f) => f.id === selectedFolderId)) {
-        onFolderSelect("") // Deselect folder
-      }
     } catch (error) {
       console.error("Error loading folders:", error)
     } finally {
