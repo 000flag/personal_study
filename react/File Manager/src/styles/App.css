@@ -1,43 +1,377 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f0f2f5;
-}
-
-.sidebar {
-  width: 240px;
-  background-color: #ffffff;
-  border-right: 1px solid #dee2e6;
+.file-manager {
   height: 100vh;
-  position: sticky;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+}
+
+.file-manager-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.file-manager-header h4 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 0 !important;
+}
+
+.file-manager-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  gap: 1px;
+  padding: 1rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.panel:first-child,
+.panel:last-child {
+  overflow-y: auto;
+}
+
+.panel:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.panel-header {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #334155;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+  white-space: nowrap;
+}
+
+.category-select {
+  width: auto;
+  max-width: 140px;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.category-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  outline: none;
+}
+
+.panel-content {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.left-panel {
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.middle-panel {
+  flex: 1;
+  min-width: 400px;
+}
+
+.right-panel {
+  min-width: 250px;
+  max-width: 450px;
+}
+
+.resizer {
+  width: 6px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+  cursor: col-resize;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 3px;
+  margin: 0 0.5rem;
+}
+
+.resizer:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(1.5);
+}
+
+.resizer.resizing {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(1.5);
+}
+
+.resizer::before {
+  content: "";
+  position: absolute;
   top: 0;
-  padding: 1rem;
+  left: -4px;
+  right: -4px;
+  bottom: 0;
+  cursor: col-resize;
 }
 
-.main-area {
-  padding: 1rem;
-}
-
-.upload-card {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: .5rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.breadcrumb {
+.resizing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: col-resize;
+  z-index: 9999;
   background: transparent;
-  padding: 0;
-  margin-bottom: 1rem;
 }
 
-.thumbnail-card {
-  width: 100px;
-  margin: .5rem;
+/* 탭 버튼 컨테이너 */
+.tab-header {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin: 0.5rem 0;
 }
 
-.thumbnail-card img {
-  border-radius: .25rem;
+/* 공통 버튼 스타일 */
+.tab-button {
+  flex: 1;
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+/* 활성화된 탭 */
+.tab-button.active {
+  color: #007aff;
+  font-weight: 600;
+  border-bottom: 2px solid #007aff;
+}
+
+/* 호버 상태 (선택 안된 탭에만 적용) */
+.tab-button:not(.active):hover {
+  color: #007aff;
+}
+
+/* 스택 레이아웃 및 세로 크기 조정을 위한 반응형 스타일 */
+@media (max-width: 992px) {
+  .file-manager-content {
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 1rem;
+  }
+
+  .left-panel,
+  .middle-panel,
+  .right-panel {
+    width: 100% !important;
+    min-width: auto;
+    max-width: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .left-panel {
+    min-height: 120px;
+    max-height: 300px;
+    flex-shrink: 0;
+  }
+
+  .middle-panel {
+    min-height: 200px;
+    max-height: 500px;
+    flex-shrink: 0;
+  }
+
+  .right-panel {
+    min-height: 150px;
+    flex: 1;
+  }
+
+  .resizer {
+    display: block;
+    height: 6px;
+    width: calc(100% - 2rem);
+    cursor: row-resize;
+    border-radius: 3px;
+    margin: 0.5rem 1rem;
+    background: linear-gradient(90deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+  }
+
+  .resizer:hover {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transform: scaleY(1.5);
+  }
+
+  .resizer::before {
+    cursor: row-resize;
+    top: -4px;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+  }
+
+  .resizing-overlay {
+    cursor: row-resize;
+  }
+
+  .panel-header {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .panel-content {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .file-manager-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .file-manager-header h4 {
+    font-size: 1.1rem;
+  }
+
+  .file-manager-content {
+    padding: 0.75rem;
+  }
+
+  .left-panel {
+    min-height: 100px;
+    max-height: 250px;
+  }
+
+  .middle-panel {
+    min-height: 180px;
+    max-height: 400px;
+  }
+
+  .right-panel {
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  .file-manager {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .file-manager-header {
+    padding: 0.75rem;
+  }
+
+  .file-manager-header h4 {
+    font-size: 1rem;
+  }
+
+  .file-manager-content {
+    padding: 0.5rem;
+  }
+
+  .left-panel {
+    min-height: 80px;
+    max-height: 200px;
+  }
+
+  .middle-panel {
+    min-height: 150px;
+    max-height: 350px;
+  }
+
+  .right-panel {
+    min-height: 100px;
+  }
+
+  .panel-header {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .panel-content {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .file-manager-content {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .left-panel {
+    min-height: 80px;
+    max-height: 150px;
+  }
+
+  .middle-panel {
+    min-height: 120px;
+    max-height: 300px;
+  }
+
+  .right-panel {
+    min-height: 80px;
+  }
+
+  .panel-header {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .panel-content {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .file-manager-header h4 {
+    font-size: 0.9rem;
+  }
+
+  .left-panel {
+    min-height: 70px;
+    max-height: 120px;
+  }
+
+  .middle-panel {
+    min-height: 100px;
+    max-height: 250px;
+  }
+
+  .right-panel {
+    min-height: 70px;
+  }
 }

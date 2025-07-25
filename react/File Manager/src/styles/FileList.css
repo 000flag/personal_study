@@ -1,0 +1,673 @@
+.file-list-container {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-controls {
+    padding: 1rem 1rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    font-size: 0.9rem;
+    border-radius: 0 0 16px 16px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.file-controls .page-size-group {
+    margin-left: auto;
+}
+
+.control-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.control-group .form-check-input {
+    border-radius: 12px;
+    border: 2px solid #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.control-group .form-check-input:checked {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+.control-group .form-select {
+    border-radius: 12px;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.control-group .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+
+.search-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-group .form-control {
+    border-radius: 12px;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.search-group .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+
+.search-group .btn {
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.search-group .btn:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.detailed-search-container {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.detailed-search-container .form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.5rem;
+}
+
+.detailed-search-container .form-control,
+.detailed-search-container .form-select {
+    font-size: 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+}
+
+.detailed-search-container .form-control:focus,
+.detailed-search-container .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+
+.detailed-search-container .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.detailed-search-container .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.detailed-search-container .btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.detailed-search-container .btn-outline-secondary {
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+}
+
+.detailed-search-container .btn-outline-secondary:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #475569;
+}
+
+.file-table-container {
+    flex: 1;
+    overflow: auto;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-table {
+    margin: 0;
+    font-size: 0.9rem;
+    background: transparent;
+}
+
+.file-table th {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-top: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    user-select: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 0.75rem 0.75rem;
+    border-bottom: 2px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.file-table th:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #1e293b;
+}
+
+.file-table th.sortable::after {
+    content: " ↕";
+    opacity: 0.5;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.file-table th.sort-asc::after {
+    content: " ↑";
+    opacity: 1;
+    color: #667eea;
+    transform: scale(1.2);
+}
+
+.file-table th.sort-desc::after {
+    content: " ↓";
+    opacity: 1;
+    color: #667eea;
+    transform: scale(1.2);
+}
+
+.file-table tbody tr {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+    height: 10px;
+}
+
+.file-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    transform: translateX(2px);
+}
+
+.file-table tbody tr.selected {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-left: 4px solid #667eea;
+}
+
+.file-table tbody tr.selected:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    transform: translateX(4px);
+}
+
+.file-table td {
+    padding: 0.5rem 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid rgba(241, 245, 249, 0.5);
+}
+
+.table-responsive {
+    overflow-x: hidden !important;
+}
+
+.file-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.file-name-cell {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    font-weight: 500;
+}
+
+.file-name-cell span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-size {
+    font-size: 0.9rem;
+    color: #64748b;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    text-align: left;
+}
+
+.file-date {
+    font-size: 0.9rem;
+    color: #64748b;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+}
+
+.file-type {
+    font-size: 0.9rem;
+    color: #64748b;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.no-files {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #64748b;
+    font-style: italic;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    margin: 1.5rem;
+    border-radius: 16px;
+    border: 2px dashed rgba(102, 126, 234, 0.2);
+    font-weight: 500;
+}
+
+.pagination-container {
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    flex-shrink: 0;
+    border-radius: 0 0 16px 16px;
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: #556376;
+    font-weight: 500;
+}
+
+.pagination .page-item .page-link {
+    border-radius: 10px;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    color: #475569;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.pagination .page-item .page-link:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-color: #667eea;
+    color: #334155;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 1830px) {
+    .table-responsive {
+        overflow-x: auto !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .file-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .control-group {
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .search-group {
+        min-width: auto;
+        order: -1;
+    }
+
+    .detailed-search-container {
+        padding: 1rem;
+    }
+
+    .file-table {
+        font-size: 0.85rem;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 0.6rem 0.5rem;
+    }
+
+    .file-name-cell {
+        min-width: 120px;
+    }
+
+    .file-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .file-controls {
+        padding: 0.75rem;
+        gap: 1rem;
+    }
+
+    .control-group {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .control-group label {
+        font-size: 0.85rem;
+    }
+
+    .detailed-search-container {
+        padding: 0.75rem;
+    }
+
+    .detailed-search-container .form-label {
+        font-size: 0.75rem;
+    }
+
+    .detailed-search-container .form-control,
+    .detailed-search-container .form-select {
+        font-size: 0.8rem;
+    }
+
+    .file-table-container {
+        overflow-x: auto;
+    }
+
+    .file-table {
+        min-width: 600px;
+        font-size: 0.8rem;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 0.5rem 0.4rem;
+        white-space: nowrap;
+    }
+
+    .file-name-cell {
+        min-width: 150px;
+        max-width: 200px;
+    }
+
+    .file-name-cell span:last-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .no-files {
+        padding: 2rem 1rem;
+        margin: 1rem;
+    }
+
+    .pagination-info {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .file-controls {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .control-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .control-group label {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .search-group .input-group {
+        flex-direction: row;
+    }
+
+    .detailed-search-container {
+        padding: 0.6rem;
+    }
+
+    .detailed-search-container .form-label {
+        font-size: 0.7rem;
+    }
+
+    .detailed-search-container .form-control,
+    .detailed-search-container .form-select {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .file-table {
+        min-width: 500px;
+        font-size: 0.75rem;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 0.4rem 0.3rem;
+    }
+
+    .file-name-cell {
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+    .file-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 0.5rem;
+    }
+
+    .file-size,
+    .file-date,
+    .file-type {
+        font-size: 0.7rem;
+    }
+
+    .no-files {
+        padding: 1.5rem 0.75rem;
+        margin: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .pagination-info {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .file-list-container {
+        height: 100%;
+        max-height: 40vh;
+        overflow: hidden;
+    }
+
+    .file-controls {
+        padding: 0.5rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .control-group {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.4rem;
+        min-width: auto;
+    }
+
+    .control-group label {
+        font-size: 0.7rem;
+        white-space: nowrap;
+    }
+
+    .control-group .form-control,
+    .control-group .form-select {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.4rem;
+    }
+
+    .search-group {
+        width: 100%;
+        order: -1;
+    }
+
+    .search-group .form-control {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.5rem;
+    }
+
+    .search-group .btn {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.5rem;
+    }
+
+    .detailed-search-container {
+        padding: 0.5rem;
+    }
+
+    .detailed-search-container .form-label {
+        font-size: 0.65rem;
+    }
+
+    .detailed-search-container .form-control,
+    .detailed-search-container .form-select {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .detailed-search-container .btn {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .file-table-container {
+        flex: 1;
+        overflow: auto;
+        max-height: calc(40vh - 80px);
+    }
+
+    .file-table {
+        min-width: 400px;
+        font-size: 0.7rem;
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 0.3rem 0.2rem;
+    }
+
+    .file-name-cell {
+        min-width: 100px;
+        max-width: 120px;
+    }
+
+    .file-icon {
+        width: 14px;
+        height: 14px;
+        margin-right: 0.3rem;
+    }
+
+    .no-files {
+        padding: 1rem 0.5rem;
+        margin: 0.4rem;
+        font-size: 0.75rem;
+    }
+
+    .pagination-info {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .file-list-container {
+        max-height: 35vh;
+    }
+
+    .file-table-container {
+        max-height: calc(35vh - 70px);
+    }
+
+    .file-table {
+        min-width: 350px;
+        font-size: 0.65rem;
+    }
+
+    .file-name-cell {
+        min-width: 90px;
+        max-width: 100px;
+    }
+
+    .file-icon {
+        width: 12px;
+        height: 12px;
+    }
+
+    .detailed-search-container .form-control,
+    .detailed-search-container .form-select {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.4rem;
+    }
+
+    .detailed-search-container .btn {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.4rem;
+    }
+
+    .pagination-info {
+        font-size: 0.7rem;
+    }
+}

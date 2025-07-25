@@ -1,0 +1,86 @@
+/* 모달 전체 영역 조정 */
+.modal-dialog {
+    max-width: 1100px !important;
+    width: 90% !important;
+}
+
+/* 모달 박스 스타일 */
+.modal-content {
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    border: none;
+    overflow: hidden;
+}
+
+/* 헤더 스타일 */
+.modal-header {
+    border-bottom: none;
+    padding: 1rem 1.5rem 0.5rem;
+}
+
+.modal-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #222;
+}
+
+/* 본문 영역 */
+.modal-body {
+    padding: 0.5rem 1.5rem 1rem;
+    overflow: visible;
+}
+
+/* 파일 상세 정보 그리드 */
+.detail-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.detail-info-grid .label {
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.detail-info-grid .value {
+    color: #222;
+    word-break: break-word;
+    background: #f5f5f5;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.94rem;
+}
+
+/* 미리보기 영역 */
+.preview-media-wrapper {
+    margin-top: 1.2rem;
+    text-align: center;
+}
+
+.preview-media {
+    max-width: 100%;
+    max-height: 45vh;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    display: inline-block;
+}
+
+.value.path {
+    background-color: #f5f5f5;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    color: #333;
+    font-family: monospace;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.value.path:hover {
+    background-color: #eee;
+}
