@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { Button, ProgressBar, Alert, Form, Tooltip, Overlay } from "react-bootstrap"
-import { type FileItem, uploadFile, fetchFolders, Folder } from "../api/api"
 import { ConfirmDialog } from "./ConfirmDialog"
 import FileDetailModal from "./FileDetailModal"
+import { FileItem, Folder } from "../api/type"
+import { uploadFile, fetchFolders } from "../api/api"
 import "../styles/FileUpload.css"
 
 interface FileUploadProps {

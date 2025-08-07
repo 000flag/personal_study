@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { Button, Alert, Spinner } from "react-bootstrap"
-import { convertFile, type FileItem } from "../api/api"
 import { ConfirmDialog } from "./ConfirmDialog"
 import FileDetailModal from "./FileDetailModal"
+import { FileItem } from "../api/type"
+import { convertFile } from "../api/api"
 import "../styles/ConvertFile.css"
 
 interface ConvertFileProps {

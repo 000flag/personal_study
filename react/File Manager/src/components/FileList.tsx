@@ -2,19 +2,13 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Table, Form, Button, InputGroup, Row, Col, Pagination } from "react-bootstrap"
-import { type FileItem, type Folder, type SearchOptions, type SearchResponse, fetchFileTypes, searchFiles } from "../api/api"
+import { FileItem, Folder, SearchOptions, SearchResponse } from "../api/type"
+import { searchFiles } from "../api/api"
 import "../styles/FileList.css"
-
-interface FileListProps {
-    folders: Folder[]
-    selectedFolderId?: string
-    onFileSelect: (file: FileItem | null) => void
-    selectedFile?: FileItem | null
-    selectedCategory?: Folder["category"] | null
-}
 
 type SortField = "filename" | "detail" | "size" | "createdAt" | "fileTypes"
 type SortDirection = "asc" | "desc"
+type SearchMode = "default" | "basic" | "detailed"
 
 interface DetailedSearchParams {
     filename: string
@@ -34,26 +28,87 @@ interface DetailedSearchParams {
     sortDirection: string
 }
 
+interface FileListProps {
+    folders: Folder[]
+    selectedFolderId?: string
+    onFileSelect: (file: FileItem | null) => void
+    selectedFile?: FileItem | null
+    selectedCategory?: Folder["category"] | null
+    fileTypesList: string[]
+}
+
 const FileList: React.FC<FileListProps> = ({
     folders,
     selectedFolderId,
     onFileSelect,
     selectedFile,
     selectedCategory,
+    fileTypesList
 }) => {
     const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null)
     const [loading, setLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
-    const [sortField, setSortField] = useState<SortField>("filename")
-    const [sortDirection, setSortDirection] = useState<SortDirection>("asc")
+    const [sortField, setSortField] = useState<SortField>("createdAt")
+    const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
     const [detailedSearchToggle, setDetailedSearchToggle] = useState(false)
-    const [fileTypesList, setFileTypesList] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(0)
     const [pageSize, setPageSize] = useState(10)
-    const [initialized, setInitialized] = useState(false)
+    const [searchMode, setSearchMode] = useState<SearchMode>("default")
 
-    const startDateRef = useRef<HTMLInputElement>(null);
-    const endDateRef = useRef<HTMLInputElement>(null);
+    const startDateRef = useRef<HTMLInputElement>(null)
+    const endDateRef = useRef<HTMLInputElement>(null)
+    const firstLoadDone = useRef(false)
+
+    // 폴더 변경 시
+    useEffect(() => {
+        if (!selectedFolderId) {
+            return
+        }
+
+        console.log("[selectedFolderId]")
+
+        setCurrentPage(0)
+        setSearchMode("default")
+        setSearchQuery("")
+        loadFiles(0, pageSize)
+    }, [selectedFolderId])
+
+    // 파일 타입 변경 시
+    useEffect(() => {
+        if (!selectedCategory) {
+            return
+        }
+
+        console.log("[selectedCategory]")
+
+        setCurrentPage(0)
+        setSearchMode("default")
+        setSearchQuery("")
+        setDetailedSearch(prev => ({
+            ...prev,
+            fileTypes: selectedCategory?.toUpperCase() ?? "",
+        }))
+        loadFiles(0, pageSize)
+    }, [selectedCategory])
+
+    // 페이지네이션과 정렬 변경 시에만 실행
+    useEffect(() => {
+        if (!firstLoadDone.current) {
+            firstLoadDone.current = true
+            return
+        }
+
+        console.log("[currentPage, pageSize] - searchMode:", searchMode)
+
+        // 현재 검색 모드에 따라 적절한 함수 호출
+        if (searchMode === "basic" && searchQuery.trim()) {
+            handleSearch()
+        } else if (searchMode === "detailed") {
+            handleDetailedSearch()
+        } else if (searchMode === "default") {
+            loadFiles(currentPage, pageSize)
+        }
+    }, [currentPage, pageSize])
 
     // 폴더 이름 가져오기
     const getFolderName = (folderId?: string): string => {
@@ -81,49 +136,12 @@ const FileList: React.FC<FileListProps> = ({
         sortDirection: "DESC",
     })
 
-    // 마운트 시에 파일 유형 목록 로드
-    useEffect(() => {
-        fetchFileTypes()
-            .then(setFileTypesList)
-            .catch(err => console.error("fetchFileTypes error:", err))
-    }, [])
-
-    // 폴더/카테고리 변경 시 무조건 검색 실행
-    useEffect(() => {
-        setCurrentPage(0)
-
-        if (selectedFolderId === "none") {
-            return
-        }
-
-        setInitialized(true)
-
-        loadFiles(0, pageSize)
-    }, [selectedFolderId])
-
-    useEffect(() => {
-        setCurrentPage(0)
-
-        if (selectedCategory === "none") {
-            return
-        }
-
-        setInitialized(true)
-
-        loadFiles(0, pageSize)
-    }, [selectedCategory])
-
-    useEffect(() => {
-        if (!initialized) return
-        loadFiles(currentPage, pageSize)
-    }, [currentPage, pageSize])
-
     const loadFiles = async (page = 0, size = 10) => {
         setLoading(true)
         try {
             const opts: SearchOptions = {
-                fileUsage: selectedFolderId === "none" ? "" : getFolderName(selectedFolderId),
-                fileTypes: selectedCategory === "none" ? "" : selectedCategory?.toUpperCase() ?? "",
+                fileUsage: !selectedFolderId ? "" : getFolderName(selectedFolderId),
+                fileTypes: !selectedCategory ? "" : selectedCategory?.toUpperCase() ?? "",
                 page: page.toString(),
                 size: size.toString(),
                 sortBy: sortField,
@@ -141,12 +159,11 @@ const FileList: React.FC<FileListProps> = ({
     // 일반 검색
     const handleSearch = async () => {
         setLoading(true)
-        setCurrentPage(0)
         try {
             const opts: SearchOptions = {
-                fileUsage: selectedFolderId === "none" ? "" : getFolderName(selectedFolderId),
-                fileTypes: selectedCategory === "none" ? "" : selectedCategory?.toUpperCase() ?? "",
-                page: "0",
+                fileUsage: !selectedFolderId ? "" : getFolderName(selectedFolderId),
+                fileTypes: !selectedCategory ? "" : selectedCategory?.toUpperCase() ?? "",
+                page: currentPage.toString(),
                 size: pageSize.toString(),
                 sortBy: sortField,
                 sortDirection: sortDirection.toUpperCase(),
@@ -167,8 +184,8 @@ const FileList: React.FC<FileListProps> = ({
                 ...detailedSearch,
                 page: currentPage.toString(),
                 size: pageSize.toString(),
-                sortBy: detailedSearch.sortBy,
-                sortDirection: detailedSearch.sortDirection,
+                sortBy: sortField,
+                sortDirection: sortDirection.toUpperCase(),
             }
             const results = await searchFiles("", opts)
             setSearchResponse(results)
@@ -179,18 +196,26 @@ const FileList: React.FC<FileListProps> = ({
         }
     }
 
+    const handleSearchTrigger = () => {
+        console.log("handleSearchTrigger")
+        setCurrentPage(0)
+        setSearchMode("basic")
+        handleSearch()
+    }
+
+    const handleDetailedSearchTrigger = () => {
+        console.log("handleDetailedSearchTrigger")
+        setCurrentPage(0)
+        setSearchMode("detailed")
+        handleDetailedSearch()
+    }
+
     const handleSort = (field: SortField) => {
         const direction = sortField === field && sortDirection === "asc" ? "desc" : "asc"
         setSortField(field)
         setSortDirection(direction)
-        // 정렬 변경 시 재검색
-        if (detailedSearchToggle) {
-            handleDetailedSearch()
-        } else if (searchQuery.trim()) {
-            handleSearch()
-        } else {
-            loadFiles(currentPage, pageSize)
-        }
+        // 정렬 변경 시 재검색 - 현재 페이지를 0으로 초기화
+        setCurrentPage(0)
     }
 
     const handleDetailedSearchChange = (field: keyof DetailedSearchParams, value: string) => {
@@ -218,6 +243,10 @@ const FileList: React.FC<FileListProps> = ({
             sortBy: "createdAt",
             sortDirection: "DESC",
         })
+        setCurrentPage(0)
+        setSearchMode("default")
+        setSearchQuery("")
+        loadFiles(0, pageSize)
     }
 
     const handlePageChange = (page: number) => {
@@ -299,13 +328,22 @@ const FileList: React.FC<FileListProps> = ({
                         id="detailed-search-toggle"
                         label="상세 검색"
                         checked={detailedSearchToggle}
-                        onChange={(e) => setDetailedSearchToggle(e.target.checked)}
+                        onChange={(e) => {
+                            setDetailedSearchToggle(e.target.checked)
+                            // 토글 변경 시에는 현재 결과를 유지하고 모드만 변경
+                            if (!e.target.checked) {
+                                // 상세 검색에서 일반 검색으로 전환
+                                // 현재 검색 결과를 유지하고 searchMode만 변경
+                                if (searchMode === "detailed") {
+                                    setSearchMode("basic")
+                                }
+                            }
+                        }}
                     />
                 </div>
 
                 {detailedSearchToggle ? (
                     <div className="detailed-search-container">
-                        {/* 상세 검색 폼 */}
                         <Row>
                             <Col md={4}>
                                 <Form.Group>
@@ -315,6 +353,12 @@ const FileList: React.FC<FileListProps> = ({
                                         size="sm"
                                         placeholder="파일명"
                                         value={detailedSearch.filename}
+                                        onKeyPress={(e) => {
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                handleDetailedSearchTrigger();
+                                            }
+                                        }}
                                         onChange={(e) => handleDetailedSearchChange("filename", e.target.value)}
                                     />
                                 </Form.Group>
@@ -327,6 +371,12 @@ const FileList: React.FC<FileListProps> = ({
                                         size="sm"
                                         placeholder="상세 설명"
                                         value={detailedSearch.detail}
+                                        onKeyPress={(e) => {
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                handleDetailedSearchTrigger();
+                                            }
+                                        }}
                                         onChange={(e) => handleDetailedSearchChange("detail", e.target.value)}
                                     />
                                 </Form.Group>
@@ -339,6 +389,12 @@ const FileList: React.FC<FileListProps> = ({
                                         size="sm"
                                         placeholder="확장자"
                                         value={detailedSearch.extension}
+                                        onKeyPress={(e) => {
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                handleDetailedSearchTrigger();
+                                            }
+                                        }}
                                         onChange={(e) => handleDetailedSearchChange("extension", e.target.value)}
                                     />
                                 </Form.Group>
@@ -349,13 +405,14 @@ const FileList: React.FC<FileListProps> = ({
                                     <Form.Select
                                         size="sm"
                                         value={detailedSearch.fileTypes}
-                                        onChange={(e) => handleDetailedSearchChange("fileTypes", e.target.value)}
+                                        onChange={(e) => {
+                                            const val = e.target.value
+                                            handleDetailedSearchChange("fileTypes", val)
+                                        }}
                                     >
                                         <option value="">파일 타입 선택</option>
                                         {fileTypesList.map((ft) => (
-                                            <option key={ft} value={ft}>
-                                                {ft}
-                                            </option>
+                                            <option key={ft} value={ft}>{ft}</option>
                                         ))}
                                     </Form.Select>
                                 </Form.Group>
@@ -461,7 +518,7 @@ const FileList: React.FC<FileListProps> = ({
                             </Col>
                         </Row>
                         <div className="mt-2 d-flex gap-2 justify-content-end">
-                            <Button variant="primary" size="sm" onClick={handleDetailedSearch}>
+                            <Button variant="primary" size="sm" onClick={handleDetailedSearchTrigger}>
                                 검색
                             </Button>
                             <Button variant="outline-secondary" size="sm" onClick={resetDetailedSearch}>
@@ -474,12 +531,17 @@ const FileList: React.FC<FileListProps> = ({
                         <InputGroup size="sm">
                             <Form.Control
                                 type="text"
-                                placeholder="파일 검색..."
+                                placeholder="파일명 검색"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                                onKeyPress={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleSearchTrigger();
+                                    }
+                                }}
                             />
-                            <Button variant="outline-secondary" onClick={handleSearch}>
+                            <Button variant="outline-secondary" onClick={handleSearchTrigger}>
                                 🔍
                             </Button>
                         </InputGroup>
@@ -542,21 +604,18 @@ const FileList: React.FC<FileListProps> = ({
                             </tbody>
                         </Table>
 
-                        {totalPages > 1 && (
-                            <div className="pagination-container d-flex justify-content-between align-items-center p-3">
-                                <div className="pagination-info">
-                                    {totalElements}개 중 {currentPage * pageSize + 1}~
-                                    {Math.min((currentPage + 1) * pageSize, totalElements)}개 표시
-                                </div>
-                                <Pagination className="mb-0">
-                                    <Pagination.First onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
-                                    <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 0} />
-                                    {renderPaginationItems()}
-                                    <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
-                                    <Pagination.Last onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
-                                </Pagination>
+                        <div className="pagination-container d-flex justify-content-between align-items-center p-3">
+                            <div className="pagination-info">
+                                총 {totalElements}개
                             </div>
-                        )}
+                            <Pagination className="mb-0">
+                                <Pagination.First onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
+                                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 0} />
+                                {renderPaginationItems()}
+                                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
+                                <Pagination.Last onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
+                            </Pagination>
+                        </div>
                     </>
                 )}
             </div>

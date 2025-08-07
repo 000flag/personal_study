@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { type Folder, fetchFolders } from "../api/api"
+import { Folder } from "../api/type"
+import { fetchFolders } from "../api/api"
 import "../styles/FolderExplorer.css"
 
 interface FolderExplorerProps {

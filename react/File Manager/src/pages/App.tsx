@@ -7,14 +7,14 @@ import FileList from "../components/FileList"
 import FileUpload from "../components/FileUpload"
 import ConvertFile from "../components/ConvertFile"
 import { useResizable } from "../hooks/useResizable"
+import { FileItem, Folder } from "../api/type"
 import { fetchFolders, fetchFileTypes } from "../api/api"
-import type { FileItem, Folder } from "../api/api"
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import "../styles/App.css"
 
 const App: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([])
-  const [selectedFolderId, setSelectedFolderId] = useState<string>("none")
+  const [selectedFolderId, setSelectedFolderId] = useState<string>("")
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null)
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [activeTab, setActiveTab] = useState<"upload" | "convert">("upload")
@@ -155,6 +155,7 @@ const App: React.FC = () => {
             selectedFile={selectedFile}
             selectedCategory={selectedCategory}
             onFileSelect={handleFileSelect}
+            fileTypesList={fileTypesList}
           />
         </div>
 

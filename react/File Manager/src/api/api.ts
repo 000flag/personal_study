@@ -1,98 +1,4 @@
-export interface Folder {
-  id: string
-  name: string
-  path: string
-  parentId: string | null
-  children: string[]
-  category: string
-}
-
-export interface FolderApiResponse {
-  data: string[]
-}
-
-export interface FileItem {
-  id: number
-  refId?: number
-  size: number
-  fileTypes: string
-  fileUsage: string
-  extension: string
-  detail: string
-  hash: string
-  filename: string
-  externalPath: string
-  activated: boolean
-  createdAt: string
-  fileSizeFormatted: string
-  thumbnailUrl: string
-}
-
-export interface SearchResponse {
-  timestamp: string
-  data: {
-    content: FileItem[]
-    pageable: {
-      pageNumber: number
-      pageSize: number
-      sort: {
-        sorted: boolean
-        unsorted: boolean
-        empty: boolean
-      }
-      offset: number
-      paged: boolean
-      unpaged: boolean
-    }
-    totalElements: number
-    totalPages: number
-    last: boolean
-    numberOfElements: number
-    number: number
-    sort: {
-      sorted: boolean
-      unsorted: boolean
-      empty: boolean
-    }
-    first: boolean
-    size: number
-    empty: boolean
-  }
-}
-
-export interface UploadResponse {
-  success: boolean
-  fileId?: string
-  message?: string
-}
-
-export interface SearchOptions {
-  filename?: string
-  fileTypes?: string
-  fileUsage?: string
-  extension?: string
-  detail?: string
-  isDeleted?: string
-  isActivated?: string
-  createdFrom?: string
-  createdTo?: string
-  minSize?: string
-  maxSize?: string
-  page?: string
-  size?: string
-  sortBy?: string
-  sortDirection?: string
-}
-
-export interface ConvertResponse {
-  success: boolean
-  message?: string
-}
-
-export interface FileTypesResponse {
-  timestamp: string
-  data: string[]
-}
+import { ConvertResponse, FileTypesResponse, Folder, FolderApiResponse, SearchOptions, SearchResponse, UploadResponse } from "./type";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -106,7 +12,7 @@ export const fetchFolders = async (
   try {
     // 캐시에 데이터가 없을 때만 fetch
     if (cachedUsageNames === null) {
-      const response = await fetch(`/api/common/file-usages`, {
+      const response = await fetch(`${API_URL}/api/common/file-usages`, {
         cache: "no-store",
       })
       if (!response.ok) throw new Error("폴더 조회 실패")
@@ -201,7 +107,7 @@ export const uploadFile = async (category: string, file: File, folderName: strin
     }).toString();
 
     // fetch 요청
-    const response = await fetch(`/api/upload/${category.toLowerCase()}?${params}`, {
+    const response = await fetch(`${API_URL}/api/upload/${category.toLowerCase()}?${params}`, {
       method: "PUT",
       body: formData,
       headers: {
@@ -279,7 +185,7 @@ export const searchFiles = async (query: string, options?: SearchOptions): Promi
     if (options?.maxSize) params.append("maxSize", options.maxSize)
 
     // 검색 API 호출
-    const response = await fetch(`/api/search?${params.toString()}`, {
+    const response = await fetch(`${API_URL}/api/search?${params.toString()}`, {
       cache: "no-store"
     });
 
@@ -300,7 +206,7 @@ export const searchFiles = async (query: string, options?: SearchOptions): Promi
 // 변환
 export const convertFile = async (fileId: number): Promise<ConvertResponse> => {
   try {
-    const response = await fetch(`/api/convert/image?id=${fileId}`,
+    const response = await fetch(`${API_URL}/api/convert/image?id=${fileId}`,
       {
         method: "GET",
         headers: {
@@ -321,7 +227,7 @@ export const convertFile = async (fileId: number): Promise<ConvertResponse> => {
 
 // 파일 타입 조회
 export async function fetchFileTypes(): Promise<string[]> {
-  const res = await fetch(`/api/common/file-types`)
+  const res = await fetch(`${API_URL}/api/common/file-types`)
   if (!res.ok) {
     throw new Error("파일 유형 목록을 불러오는데 실패했습니다.")
   }

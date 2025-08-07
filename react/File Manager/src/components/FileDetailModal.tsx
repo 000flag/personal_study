@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { Modal, Overlay, Tooltip } from "react-bootstrap"
-import { type FileItem } from "../api/api"
+import { FileItem } from "../api/type"
 import "../styles/Modal.css"
 
 interface FileDetailModalProps {
