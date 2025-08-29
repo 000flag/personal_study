@@ -140,10 +140,10 @@ function DetailPage<T extends EntityBase & Record<string, unknown>>({
                     <Skeleton variant="text" width={260} height={40} sx={{ mb: 1 }} />
                     <Skeleton variant="text" width={160} height={24} sx={{ mb: 3 }} />
                     <Grid container spacing={2} sx={{ mb: 2 }}>
-                        <Grid item xs={12} md={6}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <Skeleton variant="rounded" height={220} />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <Skeleton variant="rounded" height={220} />
                         </Grid>
                     </Grid>
@@ -201,7 +201,7 @@ function DetailPage<T extends EntityBase & Record<string, unknown>>({
 
                 {/* Summary cards */}
                 <Grid container spacing={2} sx={{ mb: 2 }}>
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Card
                             sx={{
                                 height: "100%",
@@ -248,7 +248,7 @@ function DetailPage<T extends EntityBase & Record<string, unknown>>({
                         </Card>
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Card
                             sx={{
                                 height: "100%",
